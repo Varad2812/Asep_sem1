@@ -10,6 +10,18 @@
             "use": "@vercel/python"
         },
         {
+            "src": "healthcare.py",
+            "use": "@vercel/python"
+        },
+        {
+            "src": "reminder.py",
+            "use": "@vercel/python"
+        },
+        {
+            "src": "graph.py",
+            "use": "@vercel/python"
+        },
+        {
             "src": "static/**",
             "use": "@vercel/static"
         },
@@ -24,8 +36,32 @@
             "dest": "login.py"
         },
         {
+            "src": "/login",
+            "dest": "login.py"
+        },
+        {
+            "src": "/register",
+            "dest": "login.py"
+        },
+        {
             "src": "/dashboard",
             "dest": "app.py"
+        },
+        {
+            "src": "/submit",
+            "dest": "app.py"
+        },
+        {
+            "src": "/healthcare",
+            "dest": "healthcare.py"
+        },
+        {
+            "src": "/reminder",
+            "dest": "reminder.py"
+        },
+        {
+            "src": "/graph",
+            "dest": "graph.py"
         },
         {
             "src": "/static/(.*)",
@@ -35,5 +71,11 @@
             "src": "/templates/(.*)",
             "dest": "templates/$1"
         }
-    ]
+    ],
+    "env": {
+        "FLASK_APP": "login.py",
+        "FLASK_ENV": "production",
+        "PYTHONPATH": ".",
+        "PYTHONUNBUFFERED": "1"
+    }
 }
