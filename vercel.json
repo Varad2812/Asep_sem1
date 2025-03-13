@@ -83,7 +83,7 @@
     "env": {
         "FLASK_APP": "login.py",
         "FLASK_ENV": "production",
-        "PYTHONPATH": ".",
+        "PYTHONPATH": "/var/task",
         "PYTHONUNBUFFERED": "1"
     }
 }
