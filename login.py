@@ -3,12 +3,24 @@ import sqlite3
 import os
 import hashlib
 from db_config import get_db, init_db
+from config import USER_SETTINGS_TABLE
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-here')
 
 # Add a flag to track first request
 _is_first_request = True
+
+def init_database():
+    """Initialize all required database tables"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Create user settings table
+    cursor.execute(USER_SETTINGS_TABLE)
+    
+    conn.commit()
+    conn.close()
 
 def hash_password(password):
     """Hash the password using SHA-256."""
@@ -33,6 +45,14 @@ def verify_login(email, password):
     finally:
         if conn:
             conn.close()
+
+@app.before_first_request
+def before_first_request():
+    """Initialize database before first request"""
+    global _is_first_request
+    if _is_first_request:
+        init_database()
+        _is_first_request = False
 
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
@@ -68,14 +88,6 @@ def logout():
     session.clear()
     flash('You have been logged out successfully', 'success')
     return redirect(url_for('login'))
-
-# Replace before_first_request with before_request
-@app.before_request
-def initialize():
-    global _is_first_request
-    if _is_first_request:
-        init_db()
-        _is_first_request = False
 
 if __name__ == '__main__':
     app.run(debug=True, port=5006)

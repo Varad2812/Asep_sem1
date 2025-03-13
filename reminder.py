@@ -24,7 +24,7 @@ def init_db():
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         
-        # Create reminders table
+        # Create reminders table with sent status
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS reminders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,6 +32,8 @@ def init_db():
             type TEXT NOT NULL,
             description TEXT NOT NULL,
             time TIMESTAMP NOT NULL,
+            sent INTEGER DEFAULT 0,
+            sent_at TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """)
