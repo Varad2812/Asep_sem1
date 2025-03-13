@@ -6,13 +6,10 @@ import re
 from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Change this to a secure secret key
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your-secret-key-here')
 
 # Database path
-HOME = os.path.expanduser('~')
-DESKTOP = os.path.join(HOME, 'Desktop')
-ASEP_DIR = os.path.join(DESKTOP, 'asep')
-DB_PATH = os.path.join(ASEP_DIR, 'patient_data.db')
+DB_PATH = os.environ.get('DB_PATH', '/tmp/patient_data.db')
 
 def hash_password(password):
     """Hash the password using SHA-256."""
@@ -119,7 +116,7 @@ def signup():
             conn.close()
 
             flash('Registration successful! Please login.', 'success')
-            return redirect('http://127.0.0.1:5006/login')
+            return redirect(url_for('login'))
 
         except Exception as e:
             flash(f'Error during registration: {str(e)}', 'error')
@@ -129,7 +126,7 @@ def signup():
 
 @app.route('/login')
 def login_redirect():
-    return redirect('http://127.0.0.1:5006/login')
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     print(f"Signup server starting. Database path: {DB_PATH}")

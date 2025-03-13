@@ -22,6 +22,10 @@
             "use": "@vercel/python"
         },
         {
+            "src": "signup.py",
+            "use": "@vercel/python"
+        },
+        {
             "src": "static/**",
             "use": "@vercel/static"
         },
@@ -42,6 +46,10 @@
         {
             "src": "/register",
             "dest": "login.py"
+        },
+        {
+            "src": "/signup",
+            "dest": "signup.py"
         },
         {
             "src": "/dashboard",
