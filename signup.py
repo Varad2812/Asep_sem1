@@ -11,6 +11,33 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your-secret-key-here')
 # Database path
 DB_PATH = os.environ.get('DB_PATH', '/tmp/patient_data.db')
 
+def init_db():
+    """Initialize the database and create tables if they don't exist."""
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Create credentials table if it doesn't exist
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS credentials (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        conn.commit()
+        conn.close()
+        print(f"Database initialized successfully at {DB_PATH}")
+    except Exception as e:
+        print(f"Error initializing database: {str(e)}")
+        raise
+
+# Initialize database when the application starts
+init_db()
+
 def hash_password(password):
     """Hash the password using SHA-256."""
     return hashlib.sha256(password.encode()).hexdigest()
