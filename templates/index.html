@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartDiaTrack - Home</title>
+  <!-- Google Fonts and Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #1a91ff;
+      --secondary-color: #0055b3;
+      --accent-color: #00d1ff;
+      --medical-blue: #0077cc;
+      --light-blue: #e6f3ff;
+      --success-green: #00b894;
+      --light-green: #e6fff7;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-green) 100%);
+      min-height: 100vh;
+      color: #1f2937;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      height: 90px;
+      display: flex;
+      align-items: center;
+    }
+
+    nav {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      height: 100%;
+    }
+
+    .nav-links > a,
+    .nav-links > .nav-dropdown {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--medical-blue);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+
+    .nav-links a:hover {
+      background: var(--light-blue);
+      color: var(--primary-color);
+    }
+
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      padding-top: 90px;
+      min-height: calc(100vh - 90px);
+    }
+
+    /* Side Menu */
+    .side-menu {
+      width: 280px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      height: calc(100vh - 90px);
+      position: fixed;
+      left: 0;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      padding-bottom: 5rem;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--medical-blue);
+    }
+
+    .menu-item:hover {
+      background: var(--light-blue);
+      transform: translateX(5px);
+    }
+
+    .menu-item i {
+      font-size: 1.2rem;
+      width: 24px;
+      animation: pulse 2s infinite;
+    }
+
+    /* Main Content */
+    .content {
+      flex: 1;
+      margin-left: 280px;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .welcome-text {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 1s ease;
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: var(--medical-blue);
+      opacity: 0.8;
+      margin-bottom: 2rem;
+      animation: slideUp 1s ease;
+    }
+
+    /* Decorative Elements */
+    .medical-icon {
+      font-size: 5rem;
+      color: var(--primary-color);
+      opacity: 0.1;
+      position: absolute;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .medical-icon:nth-child(1) { top: 20%; left: 35%; }
+    .medical-icon:nth-child(2) { top: 40%; right: 35%; }
+    .medical-icon:nth-child(3) { bottom: 20%; left: 40%; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 0.8; }
+    }
+
+    @media (max-width: 768px) {
+      .side-menu {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 2rem;
+      }
+
+      .welcome-text {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* Dropdown Styles */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown > .menu-item {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .dropdown > .menu-item i.fa-chevron-down {
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown.active > .menu-item i.fa-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-content {
+      display: none;
+      padding-left: 2.5rem;
+      margin-top: 0.2rem;
+    }
+
+    .dropdown.active .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content .menu-item {
+      font-size: 0.95rem;
+      padding: 0.6rem 1rem;
+    }
+
+    .add-report-btn {
+      position: fixed;
+      bottom: 2rem;
+      left: 1rem;
+      width: calc(250px - 2rem);  /* Match side menu width minus margins */
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .add-report-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(26, 145, 255, 0.2);
+    }
+
+    /* Add these styles for the contact dropdown */
+    .nav-dropdown {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+    }
+
+    .nav-dropdown > a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;  /* Match other nav links padding */
+    }
+
+    .nav-dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      min-width: 250px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      z-index: 1000;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-content {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .nav-dropdown-content a {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem 1.2rem;
+      color: var(--medical-blue);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-dropdown-content a:hover {
+      background: var(--light-blue);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 12px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <nav>
+      <h2 class="logo-text">SmartDiaTrack</h2>
+      <div class="nav-links">
+        <a href="#"><i class="fas fa-user"></i> Profile</a>
+        <a href="#">About Us</a>
+        <div class="nav-dropdown">
+          <a href="#">Contact</a>
+          <div class="nav-dropdown-content">
+            <a href="tel:9529200000">
+              <i class="fas fa-phone"></i>
+              95292XXXXX
+            </a>
+            <a href="mailto:smartdiatrack@gmail.com">
+              <i class="fas fa-envelope"></i>
+              smartdiatrack@gmail.com
+            </a>
+          </div>
+        </div>
+        <a href="#" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main container -->
+  <div class="main-container">
+    <!-- Side menu -->
+    <aside class="side-menu">
+      <div class="menu-item" onclick="location.href='#'">
+        <a href="http://127.0.0.1:5002/" class="menu-item">
+    <i class="fas fa-chart-line"></i>
+    <span>Track</span>
+</a>
+      </div>
+      <div class="dropdown">
+        <div class="menu-item">
+            <a href="http://127.0.0.1:5005" class="menu-item">
+    <i class="fas fa-chart-line"></i>
+    <span>Reminder</span>
+        </a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <div class="menu-item">
+          <div>
+            <i class="fas fa-heart"></i>
+            <span>Healthcare</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="dropdown-content">
+          <div class="menu-item" onclick="getRecommendations('nutrition')">
+            <i class="fas fa-apple-alt"></i>
+            <span>Nutrition Recommendation</span>
+          </div>
+          <div class="menu-item" onclick="getRecommendations('exercise')">
+            <i class="fas fa-dumbbell"></i>
+            <span>Exercise Plan</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="content">
+      <i class="fas fa-heartbeat medical-icon"></i>
+      <i class="fas fa-notes-medical medical-icon"></i>
+      <i class="fas fa-pills medical-icon"></i>
+     
+      <h1 class="welcome-text">SmartDiaTrack</h1>
+      <p class="subtitle">Your intelligent companion for seamless diabetes management and tracking.</p>
+    </main>
+  </div>
+
+  <!-- Add Report Button -->
+  <button class="add-report-btn">
+    <i class="fas fa-plus-circle"></i>
+    <span>Add Report</span>
+  </button>
+
+  <!-- Recommendation Modal -->
+  <div id="recommendationModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modalTitle">Recommendations</h2>
+      <div id="recommendationContent"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Toggle dropdown
+    document.querySelectorAll('.dropdown > .menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const parent = item.parentElement;
+        parent.classList.toggle('active');
+      });
+    });
+
+    function getRecommendations(type) {
+      fetch(`/get_recommendations/${type}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const modal = document.getElementById('recommendationModal');
+            const content = document.getElementById('recommendationContent');
+            const title = document.getElementById('modalTitle');
+            
+            title.textContent = type === 'nutrition' ? 
+              'Nutrition Recommendations' : 'Exercise Plan';
+            content.innerHTML = data.recommendations.replace(/\n/g, '<br>');
+            modal.style.display = 'block';
+          } else {
+            alert('Error getting recommendations: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error getting recommendations. Please try again.');
+        });
+    }
+
+    // Close modal when clicking the X or outside the modal
+    document.querySelector('.close').onclick = function() {
+      document.getElementById('recommendationModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('recommendationModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

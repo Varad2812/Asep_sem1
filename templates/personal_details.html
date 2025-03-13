@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Questionnaire - SmartDiaTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a91ff;
+            --secondary-color: #0055b3;
+            --accent-color: #00d1ff;
+            --medical-blue: #0077cc;
+            --light-blue: #e6f3ff;
+            --success-green: #00b894;
+            --light-green: #e6fff7;
+        }
+ 
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-green) 100%);
+            min-height: 100vh;
+        }
+ 
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+ 
+        nav {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+ 
+        nav h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+ 
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+ 
+        .nav-links a {
+            color: var(--medical-blue);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+ 
+        .nav-links a:hover {
+            background: var(--light-blue);
+            color: var(--primary-color);
+        }
+ 
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+ 
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 250px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            z-index: 1000;
+        }
+ 
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+ 
+        .nav-dropdown-content a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.2rem;
+            color: var(--medical-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+ 
+        .nav-dropdown-content a:hover {
+            background: var(--light-blue);
+        }
+ 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+ 
+        /* Form Styles */
+        .form-container {
+            max-width: 800px;
+            margin: 100px auto 40px;
+            padding: 2rem;
+        }
+ 
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+ 
+        .form-section h2 {
+            color: var(--medical-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-blue);
+        }
+ 
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+ 
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+            font-weight: 500;
+        }
+ 
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+ 
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 145, 255, 0.1);
+        }
+ 
+        .test-reports {
+            margin-top: 2rem;
+        }
+ 
+        .report-fields {
+            background: var(--light-blue);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+ 
+        button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 145, 255, 0.2);
+        }
+ 
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 145, 255, 0.3);
+        }
+ 
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1rem;
+                margin-top: 80px;
+            }
+        }
+ 
+        .progress-bar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: var(--light-blue);
+            padding: 1rem;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+ 
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+ 
+        .step {
+            display: flex;
+            align-items: center;
+            color: var(--medical-blue);
+            font-size: 0.9rem;
+        }
+ 
+        .step.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+ 
+        .step i {
+            margin-right: 0.5rem;
+        }
+ 
+        .form-section {
+            display: none;
+        }
+ 
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+ 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+ 
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+ 
+        .btn-prev {
+            background: var(--light-blue);
+            color: var(--medical-blue);
+        }
+ 
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+ 
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+ 
+        .radio-group {
+            display: flex;
+            gap: 2rem;
+        }
+ 
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+ 
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 100px;
+        }
+ 
+        .report-fields {
+            background: var(--light-blue);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+ 
+        .report-fields h3 {
+            color: var(--medical-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+ 
+        .add-report-btn {
+            background: var(--success-green);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+ 
+        .add-report-btn:hover {
+            background: #009b7d;
+        }
+ 
+        .report-fields {
+            position: relative;
+        }
+ 
+        .remove-report {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+ 
+        .remove-report:hover {
+            background: #ff6b81;
+            transform: scale(1.1);
+        }
+ 
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 145, 255, 0.2);
+        }
+ 
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 145, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <h2>SmartDiaTrack</h2>
+            <div class="nav-links">
+                <a href="#">About Us</a>
+                <div class="nav-dropdown">
+                    <a href="#">Contact</a>
+                    <div class="nav-dropdown-content">
+                        <a href="tel:9529200000">
+                            <i class="fas fa-phone"></i>
+                            95292XXXXX
+                        </a>
+                        <a href="mailto:smartdiatrack@gmail.com">
+                            <i class="fas fa-envelope"></i>
+                            smartdiatrack@gmail.com
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+ 
+    <div class="progress-bar">
+        <div class="progress-steps">
+            <div class="step active"><i class="fas fa-user"></i>Personal Info</div>
+            <div class="step"><i class="fas fa-notes-medical"></i>Medical History</div>
+            <div class="step"><i class="fas fa-heartbeat"></i>Health Metrics</div>
+            <div class="step"><i class="fas fa-file-medical"></i>Test Reports</div>
+            <div class="step"><i class="fas fa-running"></i>Lifestyle</div>
+            <div class="step"><i class="fas fa-clipboard-check"></i>Goals</div>
+        </div>
+    </div>
+ 
+    <div class="form-container">
+        <form id="personalDetailsForm">
+            <!-- Section 1: Personal Information -->
+            <div class="form-section active">
+                <h2>Personal Information</h2>
+                <div class="form-group">
+                    <label for="full_name">Full Name: *</label>
+                    <input type="text" id="full_name" name="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age: *</label>
+                    <input type="text" id="age" name="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender: *</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email: *</label>
+                    <input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number: *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <textarea id="address" name="address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="emergency_contact">Emergency Contact: *</label>
+                    <input type="tel" id="emergency_contact" name="emergency_contact" required>
+                </div>
+                <div class="form-group">
+                    <label for="blood_group">Blood Group: *</label>
+                    <select id="blood_group" name="blood_group" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="medical_conditions">Medical Conditions: *</label>
+                    <textarea id="medical_conditions" name="medical_conditions" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="allergies">Allergies: *</label>
+                    <textarea id="allergies" name="allergies" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="current_medications">Current Medications:</label>
+                    <textarea id="current_medications" name="current_medications"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="family_medical_history">Family Medical History:</label>
+                    <textarea id="family_medical_history" name="family_medical_history"></textarea>
+                </div>
+            </div>
+ 
+            <!-- Section 2: Medical History -->
+            <div class="form-section">
+                <h2>Medical History</h2>
+                <div class="form-group">
+                    <label>Type of Diabetes *</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="type1" name="type_of_diabetes" value="type1" required>
+                            <label for="type1">Type 1</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="type2" name="type_of_diabetes" value="type2" required>
+                            <label for="type2">Type 2</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="gestational" name="type_of_diabetes" value="gestational" required>
+                            <label for="gestational">Gestational</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="diagnosisDate">Date of Diagnosis *</label>
+                    <input type="date" id="diagnosisDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Family History of Diabetes *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="none" name="family_history_diabetes" onclick="handleNoneSelection(this)" required>
+                            <label for="none">None</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="parent" name="family_history_diabetes" class="family-member">
+                            <label for="parent">Parent</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="sibling" name="family_history_diabetes" class="family-member">
+                            <label for="sibling">Sibling</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="grandparent" name="family_history_diabetes" class="family-member">
+                            <label for="grandparent">Grandparent</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="known_allergies">Known Allergies *</label>
+                    <textarea id="known_allergies" name="known_allergies" placeholder="List any known allergies..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="other_medical_conditions">Other Medical Conditions:</label>
+                    <textarea id="other_medical_conditions" name="other_medical_conditions" placeholder="List any other medical conditions..."></textarea>
+                </div>
+            </div>
+ 
+            <!-- Section 3: Health Metrics -->
+            <div class="form-section">
+                <h2>Health Metrics</h2>
+                <div class="form-group">
+                    <label for="weight">Weight (kg) *</label>
+                    <input type="number" id="weight" name="weight" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (cm) *</label>
+                    <input type="number" id="height" name="height" required>
+                </div>
+                <div class="form-group">
+                    <label for="bloodPressure">Blood Pressure (mmHg) *</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="number" id="systolic" name="systolic_bp" placeholder="Systolic" required>
+                        <input type="number" id="diastolic" name="diastolic_bp" placeholder="Diastolic" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cholesterol">Cholesterol Levels *</label>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <input type="number" id="hdl" name="hdl_cholesterol" placeholder="HDL" required>
+                        <input type="number" id="ldl" name="ldl_cholesterol" placeholder="LDL" required>
+                        <input type="number" id="triglycerides" name="triglycerides" placeholder="Triglycerides" required>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- Section 4: Test Reports -->
+            <div class="form-section">
+                <h2>Test Reports</h2>
+                <div id="reportsContainer">
+                    <div class="report-fields">
+                        <h3>Test Report</h3>
+                        <!-- Blood Sugar Values -->
+                        <div class="form-group">
+                            <label for="postPrandial1">Post Prandial Glucose (mg/dL) *</label>
+                            <input type="number" 
+                                   id="postPrandial1" 
+                                   name="post_prandial_glucose" 
+                                   min="0" 
+                                   max="1000" 
+                                   required 
+                                   onchange="validateNumber(this, 'post_prandial')">
+                        </div>
+                        <div class="form-group">
+                            <label for="fastingGlucose1">Fasting Blood Glucose (mg/dL) *</label>
+                            <input type="number" 
+                                   id="fastingGlucose1" 
+                                   name="fasting_glucose" 
+                                   min="0" 
+                                   max="1000" 
+                                   required 
+                                   onchange="validateNumber(this, 'fasting')">
+                        </div>
+                        <div class="form-group">
+                            <label for="hba1c1">HbA1c (%) *</label>
+                            <input type="number" 
+                                   id="hba1c1" 
+                                   name="hba1c" 
+                                   min="0" 
+                                   max="20" 
+                                   step="0.1" 
+                                   required 
+                                   onchange="validateNumber(this, 'hba1c')">
+                        </div>
+
+                        <!-- Urine Test Section -->
+                        <div class="form-group">
+                            <label>Urine Test Information *</label>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                <div>
+                                    <label for="urineGlucose1">Urine Glucose *</label>
+                                    <select id="urineGlucose1" name="urine_glucose" required>
+                                        <option value="">Select result</option>
+                                        <option value="negative">Negative</option>
+                                        <option value="trace">Trace</option>
+                                        <option value="1+">1+</option>
+                                        <option value="2+">2+</option>
+                                        <option value="3+">3+</option>
+                                        <option value="4+">4+</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="urineKetones1">Ketones *</label>
+                                    <select id="urineKetones1" name="urine_ketones" required>
+                                        <option value="">Select result</option>
+                                        <option value="negative">Negative</option>
+                                        <option value="trace">Trace</option>
+                                        <option value="small">Small</option>
+                                        <option value="moderate">Moderate</option>
+                                        <option value="large">Large</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="urineProtein1">Protein *</label>
+                                    <select id="urineProtein1" name="urine_protein" required>
+                                        <option value="">Select result</option>
+                                        <option value="negative">Negative</option>
+                                        <option value="trace">Trace</option>
+                                        <option value="1+">1+</option>
+                                        <option value="2+">2+</option>
+                                        <option value="3+">3+</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="addReportBtn" class="add-report-btn">
+                    <i class="fas fa-plus"></i> Add Another Report
+                </button>
+            </div>
+ 
+            <!-- Section 5: Lifestyle -->
+            <div class="form-section">
+                <h2>Lifestyle Information</h2>
+                <div class="form-group">
+                    <label>Physical Activity Level *</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="sedentary" name="physical_activity_level" value="sedentary" required>
+                            <label for="sedentary">Sedentary</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="moderate" name="physical_activity_level" value="moderate" required>
+                            <label for="moderate">Moderate</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="active" name="physical_activity_level" value="active" required>
+                            <label for="active">Active</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exerciseRoutine">Exercise Routine *</label>
+                    <textarea id="exerciseRoutine" name="exercise_routine" placeholder="Describe your typical exercise routine..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="sleepHours">Average Hours of Sleep *</label>
+                    <input type="number" id="sleepHours" name="average_sleep_hours" min="0" max="24" required>
+                </div>
+                <div class="form-group">
+                    <label>Diet Preferences *</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vegetarian" name="diet_preferences" value="vegetarian" required>
+                            <label for="vegetarian">Vegetarian</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vegan" name="diet_preferences" value="vegan">
+                            <label for="vegan">Vegan</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="glutenFree" name="diet_preferences" value="gluten-free">
+                            <label for="glutenFree">Gluten-Free</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mixed" name="diet_preferences" value="mixed">
+                            <label for="mixed">Mixed</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- Section 6: Goals -->
+            <div class="form-section">
+                <h2>Health Goals</h2>
+                <div class="form-group">
+                    <label for="bloodSugarGoal">Target Blood Sugar Range *</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="number" id="bloodSugarMin" name="target_blood_sugar_min" placeholder="Minimum" required>
+                        <input type="number" id="bloodSugarMax" name="target_blood_sugar_max" placeholder="Maximum" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="weightGoal">Weight Goal (kg) *</label>
+                    <input type="number" id="weightGoal" name="weight_goals" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="activityGoal">Weekly Activity Goal (hours) *</label>
+                    <input type="number" id="activityGoal" name="weekly_activity_goal" required>
+                </div>
+                <div class="form-group">
+                    <label for="additionalGoals">Additional Health Goals:</label>
+                    <textarea id="additionalGoals" name="additional_health_goals" placeholder="Describe any other health goals..."></textarea>
+                </div>
+            </div>
+ 
+            <div class="navigation-buttons">
+                <button type="button" class="btn-prev" id="prevBtn" style="display: none;">Previous</button>
+                <button type="button" class="btn-next" id="nextBtn">Next</button>
+                <button type="button" class="btn-submit" id="submitBtn" style="display: none;">Submit</button>
+            </div>
+        </form>
+    </div>
+ 
+    <script>
+        let currentSection = 0;
+        const sections = document.querySelectorAll('.form-section');
+        const steps = document.querySelectorAll('.step');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+ 
+        function showSection(n) {
+            // Validate section number
+            if (n >= 0 && n < sections.length) {
+                sections[currentSection].classList.remove('active');
+                steps[currentSection].classList.remove('active');
+                currentSection = n;
+                sections[currentSection].classList.add('active');
+                steps[currentSection].classList.add('active');
+
+                // Update button visibility
+                prevBtn.style.display = currentSection === 0 ? 'none' : 'block';
+                if (currentSection === sections.length - 1) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Add event listeners for navigation
+        prevBtn.addEventListener('click', () => showSection(currentSection - 1));
+        nextBtn.addEventListener('click', () => showSection(currentSection + 1));
+
+        let reportCount = 1;
+
+        // Function to handle adding test reports
+        document.getElementById('addReportBtn').addEventListener('click', function() {
+            reportCount++;
+            const container = document.getElementById('reportsContainer');
+            
+            const reportDiv = document.createElement('div');
+            reportDiv.className = 'report-fields';
+            reportDiv.innerHTML = `
+                <button type="button" class="remove-report" onclick="removeReport(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h3>Test Report ${reportCount}</h3>
+                <!-- Blood Sugar Values -->
+                <div class="form-group">
+                    <label for="postPrandial${reportCount}">Post Prandial Glucose (mg/dL) *</label>
+                    <input type="number" 
+                           id="postPrandial${reportCount}" 
+                           name="post_prandial_glucose[]" 
+                           min="0" 
+                           max="1000" 
+                           required 
+                           onchange="validateNumber(this, 'post_prandial')">
+                </div>
+                <div class="form-group">
+                    <label for="fastingGlucose${reportCount}">Fasting Blood Glucose (mg/dL) *</label>
+                    <input type="number" 
+                           id="fastingGlucose${reportCount}" 
+                           name="fasting_glucose[]" 
+                           min="0" 
+                           max="1000" 
+                           required 
+                           onchange="validateNumber(this, 'fasting')">
+                </div>
+                <div class="form-group">
+                    <label for="hba1c${reportCount}">HbA1c (%) *</label>
+                    <input type="number" 
+                           id="hba1c${reportCount}" 
+                           name="hba1c[]" 
+                           min="0" 
+                           max="20" 
+                           step="0.1" 
+                           required 
+                           onchange="validateNumber(this, 'hba1c')">
+                </div>
+
+                <!-- Urine Test Section -->
+                <div class="form-group">
+                    <label>Urine Test Information *</label>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div>
+                            <label for="urineGlucose${reportCount}">Urine Glucose *</label>
+                            <select id="urineGlucose${reportCount}" name="urine_glucose[]" required>
+                                <option value="">Select result</option>
+                                <option value="negative">Negative</option>
+                                <option value="trace">Trace</option>
+                                <option value="1+">1+</option>
+                                <option value="2+">2+</option>
+                                <option value="3+">3+</option>
+                                <option value="4+">4+</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="urineKetones${reportCount}">Ketones *</label>
+                            <select id="urineKetones${reportCount}" name="urine_ketones[]" required>
+                                <option value="">Select result</option>
+                                <option value="negative">Negative</option>
+                                <option value="trace">Trace</option>
+                                <option value="small">Small</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="large">Large</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="urineProtein${reportCount}">Protein *</label>
+                            <select id="urineProtein${reportCount}" name="urine_protein[]" required>
+                                <option value="">Select result</option>
+                                <option value="negative">Negative</option>
+                                <option value="trace">Trace</option>
+                                <option value="1+">1+</option>
+                                <option value="2+">2+</option>
+                                <option value="3+">3+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(reportDiv);
+        });
+
+        // Function to remove a report
+        function removeReport(button) {
+            button.parentElement.remove();
+        }
+
+        // Add these validation functions
+        function validateNumber(input, type) {
+            let value = Number(input.value);
+            if (isNaN(value) || value < 0) {
+                input.value = '';
+                alert('Please enter a valid positive number');
+                return;
+            }
+
+            // Validate ranges based on type
+            switch(type) {
+                case 'post_prandial':
+                    if (value < 70 || value > 500) {
+                        alert('Post Prandial glucose should be between 70 and 500 mg/dL');
+                        input.value = '';
+                        return;
+                    }
+                    input.value = Math.round(value);
+                    break;
+                case 'fasting':
+                    if (value < 50 || value > 400) {
+                        alert('Fasting glucose should be between 50 and 400 mg/dL');
+                        input.value = '';
+                        return;
+                    }
+                    input.value = Math.round(value);
+                    break;
+                case 'hba1c':
+                    if (value < 3 || value > 15) {
+                        alert('HbA1c should be between 3% and 15%');
+                        input.value = '';
+                        return;
+                    }
+                    input.value = Math.round(value * 10) / 10;
+                    break;
+            }
+        }
+
+        // Update the submit button event listener
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get all form values
+            const formData = new FormData();
+            
+            // Add personal details with corrected field names
+            const personalFields = [
+                'full_name', 'age', 'gender', 'email', 'phone', 'address',
+                'emergency_contact', 'blood_group', 'known_allergies',
+                'current_medications', 'family_medical_history',
+                'other_medical_conditions'
+            ];
+
+            personalFields.forEach(field => {
+                const value = document.getElementById(field)?.value || '';
+                formData.append(field, value);
+            });
+
+            // Add medical history
+            formData.append('type_of_diabetes', document.querySelector('input[name="type_of_diabetes"]:checked')?.value || '');
+            formData.append('date_of_diagnosis', document.getElementById('diagnosisDate')?.value || '');
+            
+            // Get family history of diabetes
+            const familyHistoryChecked = Array.from(document.querySelectorAll('input[name="family_history_diabetes"]:checked'))
+                .map(cb => cb.id)
+                .join(', ');
+            formData.append('family_history_diabetes', familyHistoryChecked);
+
+            // Add health metrics
+            formData.append('weight', document.getElementById('weight')?.value || '');
+            formData.append('height', document.getElementById('height')?.value || '');
+            formData.append('systolic_bp', document.getElementById('systolic')?.value || '');
+            formData.append('diastolic_bp', document.getElementById('diastolic')?.value || '');
+            formData.append('hdl_cholesterol', document.getElementById('hdl')?.value || '');
+            formData.append('ldl_cholesterol', document.getElementById('ldl')?.value || '');
+            formData.append('triglycerides', document.getElementById('triglycerides')?.value || '');
+
+            // Get all test reports
+            const reports = document.querySelectorAll('.report-fields');
+            
+            // Get values from the first (most recent) report only
+            const firstReport = reports[0];
+            if (firstReport) {
+                // Get blood sugar values using the correct IDs
+                const postPrandial = document.getElementById('postPrandial1').value;
+                const fasting = document.getElementById('fastingGlucose1').value;
+                const hba1c = document.getElementById('hba1c1').value;
+                
+                // Get urine test values
+                const urineGlucose = document.getElementById('urineGlucose1').value;
+                const urineKetones = document.getElementById('urineKetones1').value;
+                const urineProtein = document.getElementById('urineProtein1').value;
+
+                // Debug logging
+                console.log('Post Prandial Value:', postPrandial);
+                console.log('Fasting Value:', fasting);
+
+                // Add values to formData if they exist
+                if (postPrandial) {
+                    formData.append('post_prandial_glucose', Number(postPrandial));
+                    console.log('Adding post_prandial_glucose:', Number(postPrandial));
+                }
+                if (fasting) {
+                    formData.append('fasting_glucose', Number(fasting));
+                    console.log('Adding fasting_glucose:', Number(fasting));
+                }
+                if (hba1c) {
+                    formData.append('hba1c', Number(hba1c));
+                    console.log('Adding hba1c:', Number(hba1c));
+                }
+                if (urineGlucose) formData.append('urine_glucose', urineGlucose);
+                if (urineKetones) formData.append('urine_ketones', urineKetones);
+                if (urineProtein) formData.append('urine_protein', urineProtein);
+            }
+
+            // Add lifestyle information
+            formData.append('physical_activity_level', document.querySelector('input[name="physical_activity_level"]:checked')?.value || '');
+            formData.append('exercise_routine', document.getElementById('exerciseRoutine')?.value || '');
+            formData.append('average_sleep_hours', document.getElementById('sleepHours')?.value || '');
+            
+            // Get diet preferences
+            const dietPreferences = Array.from(document.querySelectorAll('#vegetarian, #vegan, #glutenFree, #mixed'))
+                .filter(cb => cb.checked)
+                .map(cb => cb.id)
+                .join(', ');
+            formData.append('diet_preferences', dietPreferences);
+
+            // Add health goals
+            formData.append('target_blood_sugar_min', document.getElementById('bloodSugarMin')?.value || '');
+            formData.append('target_blood_sugar_max', document.getElementById('bloodSugarMax')?.value || '');
+            formData.append('weight_goals', document.getElementById('weightGoal')?.value || '');
+            formData.append('weekly_activity_goal', document.getElementById('activityGoal')?.value || '');
+            formData.append('additional_health_goals', document.getElementById('additionalGoals')?.value || '');
+
+            // Log all form data for debugging
+            console.log('Form data being sent:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            // Send data to server
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Data saved successfully!');
+                    // Optionally reset form
+                    document.getElementById('personalDetailsForm').reset();
+                    showSection(0);
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to save data'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error submitting form. Please try again.');
+            });
+        });
+
+        // Initialize first section
+        showSection(0);
+    </script>
+</body>
+</html>
