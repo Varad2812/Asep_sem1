@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reminder Bot Setup</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4a9ff5;
+      --primary-light: #bfdcff;
+      --primary-dark: #0f78d6;
+      --accent: #60caff;
+      --white: #ffffff;
+      --light-gray: #f3f8ff;
+      --text: #324b66;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 15px rgba(74, 159, 245, 0.2);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: var(--transition);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--light-gray);
+      padding: 20px 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 30px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    h1 {
+      color: var(--primary-dark);
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+    }
+
+    h1 i {
+      color: var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin: 0;
+      padding-bottom: 10px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 30px;
+      overflow: hidden;
+      border: 1px solid var(--primary-light);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 25px rgba(74, 159, 245, 0.3);
+      transform: translateY(-5px);
+    }
+
+    .card-header {
+      background: var(--primary);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--primary-light);
+    }
+
+    th {
+      background-color: var(--light-gray);
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    tr {
+      transition: background-color 0.3s ease;
+    }
+
+    tr:hover {
+      background-color: #e6f2ff;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--primary-light);
+      border-radius: 8px;
+      font-size: 14px;
+      transition: var(--transition);
+      background-color: var(--white);
+      color: var(--text);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(74, 159, 245, 0.25);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+
+    .btn:hover::after {
+      animation: ripple 1s ease-out;
+    }
+
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(20, 20);
+        opacity: 0;
+      }
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(74, 159, 245, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(74, 159, 245, 0.4);
+    }
+
+    .btn-icon {
+      margin-right: 8px;
+    }
+
+    .add-row {
+      text-align: right;
+      margin-bottom: 20px;
+      animation: slideInRight 0.5s ease-out;
+    }
+
+    .submit-wrapper {
+      text-align: center;
+      margin: 40px 0 20px;
+    }
+
+    .submit-btn {
+      padding: 15px 40px;
+      font-size: 18px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 20px rgba(74, 159, 245, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(74, 159, 245, 0.4);
+    }
+
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+
+    .submit-btn:hover::after {
+      animation: ripple 1s ease-out;
+    }
+
+    .flash {
+      background-color: #d1ecff;
+      border-left: 5px solid var(--primary);
+      border-radius: var(--border-radius);
+      padding: 15px;
+      margin-bottom: 30px;
+      color: var(--primary-dark);
+      text-align: center;
+      animation: slideInLeft 0.5s ease-out;
+    }
+
+    .flash ul {
+      list-style-type: none;
+    }
+
+    .flash li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flash li i {
+      margin-right: 10px;
+      color: var(--primary);
+    }
+
+    .delete-row {
+      color: #ff6b6b;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    }
+
+    .delete-row:hover {
+      color: #ff5252;
+      transform: scale(1.2);
+      opacity: 1;
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    .tooltip i {
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .tooltip:hover i {
+      color: var(--primary-dark);
+    }
+
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: var(--primary-dark);
+      color: var(--white);
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px 10px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%) scale(0.9);
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    .icon-container {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .icon-container i {
+      color: var(--primary);
+      font-size: 20px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title .icon-container:hover {
+      transform: rotate(15deg);
+    }
+
+    .toggle-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .toggle-icon.rotate {
+      transform: rotate(180deg);
+    }
+
+    /* Animation for row additions */
+    .new-row {
+      animation: highlightRow 1.5s ease;
+    }
+
+    @keyframes highlightRow {
+      0% { background-color: var(--primary-light); }
+      100% { background-color: transparent; }
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: 30px;
+      color: #8aa5c1;
+      background: var(--light-gray);
+      border-radius: var(--border-radius);
+      margin: 20px 0;
+    }
+
+    .empty-message i {
+      font-size: 40px;
+      color: var(--primary-light);
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        padding: 15px;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      th, td {
+        min-width: 120px;
+      }
+
+      .card-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .card-header h2 {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+  <script>
+    // Wait for DOM to fully load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize tables with one row each
+      addMedicineRow();
+      addExerciseRow();
+
+      // Remove the initial empty rows that were there by default
+      document.querySelectorAll('.initial-row').forEach(row => {
+        row.remove();
+      });
+
+      // Add animation to all cards
+      document.querySelectorAll('.card').forEach((card, index) => {
+        card.style.animationDelay = (index * 0.2) + 's';
+        card.style.animationName = 'fadeIn';
+        card.style.animationDuration = '0.8s';
+        card.style.animationFillMode = 'backwards';
+      });
+    });
+
+    // Function to add new medicine row
+    function addMedicineRow() {
+      const table = document.getElementById("medicineTable").getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow();
+      newRow.className = "new-row";
+
+      newRow.innerHTML = `
+        <td><input type="text" name="med_name" placeholder="e.g., Aspirin" required></td>
+        <td><input type="text" name="dosage" placeholder="e.g., 500mg" required></td>
+        <td><input type="time" name="med_time" required></td>
+        <td>
+          <select name="frequency" required>
+            <option value="" disabled selected>Select frequency</option>
+            <option value="Daily">Daily</option>
+            <option value="Twice daily">Twice daily</option>
+            <option value="Three times daily">Three times daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="As needed">As needed</option>
+            <option value="Other">Other</option>
+          </select>
+        </td>
+        <td><input type="text" name="additional_instructions" placeholder="e.g., Take with food"></td>
+        <td class="text-center"><i class="fas fa-trash-alt delete-row" onclick="deleteRow(this)"></i></td>
+      `;
+
+      // Animate inputs
+      animateElements(newRow.querySelectorAll('input, select'));
+    }
+
+    // Function to add new exercise row
+    function addExerciseRow() {
+      const table = document.getElementById("exerciseTable").getElementsByTagName('tbody')[0];
+      const newRow = table.insertRow();
+      newRow.className = "new-row";
+
+      newRow.innerHTML = `
+        <td>
+          <select name="exercise_type" required>
+            <option value="" disabled selected>Select type</option>
+            <option value="Walking">Walking</option>
+            <option value="Running">Running</option>
+            <option value="Swimming">Swimming</option>
+            <option value="Cycling">Cycling</option>
+            <option value="Yoga">Yoga</option>
+            <option value="Strength Training">Strength Training</option>
+            <option value="Other">Other</option>
+          </select>
+        </td>
+        <td><input type="text" name="duration" placeholder="e.g., 30 minutes" required></td>
+        <td><input type="time" name="exercise_time" required></td>
+        <td><input type="text" name="exercise_specs" placeholder="e.g., Moderate intensity"></td>
+        <td class="text-center"><i class="fas fa-trash-alt delete-row" onclick="deleteRow(this)"></i></td>
+      `;
+
+      // Animate inputs
+      animateElements(newRow.querySelectorAll('input, select'));
+    }
+
+    // Function to delete a row with animation
+    function deleteRow(button) {
+      const row = button.closest('tr');
+      const table = row.closest('table');
+
+      // Don't delete if it's the only row left
+      if (table.getElementsByTagName('tbody')[0].rows.length > 1) {
+        // Add fade out animation
+        row.style.transition = "all 0.5s ease";
+        row.style.opacity = "0";
+        row.style.transform = "translateX(20px)";
+
+        // Remove after animation completes
+        setTimeout(() => {
+          row.remove();
+        }, 500);
+      } else {
+        showFloatingMessage("You must have at least one entry");
+      }
+    }
+
+    // Function to toggle section visibility with animation
+    function toggleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const icon = document.querySelector(`[data-section="${sectionId}"] .toggle-icon`);
+
+      if (section.style.display === "none" || section.style.display === "") {
+        // Show the section with animation
+        section.style.display = "block";
+        section.style.opacity = "0";
+        section.style.transform = "translateY(-10px)";
+
+        setTimeout(() => {
+          section.style.opacity = "1";
+          section.style.transform = "translateY(0)";
+        }, 10);
+
+        icon.classList.add("rotate");
+      } else {
+        // Hide the section with animation
+        section.style.opacity = "0";
+        section.style.transform = "translateY(-10px)";
+
+        setTimeout(() => {
+          section.style.display = "none";
+        }, 300);
+
+        icon.classList.remove("rotate");
+      }
+    }
+
+    // Function to animate elements sequentially
+    function animateElements(elements) {
+      elements.forEach((element, index) => {
+        element.style.opacity = "0";
+        element.style.transform = "translateY(10px)";
+
+        setTimeout(() => {
+          element.style.transition = "all 0.4s ease";
+          element.style.opacity = "1";
+          element.style.transform = "translateY(0)";
+        }, 100 + (index * 100));
+      });
+    }
+
+    // Function to show floating message
+    function showFloatingMessage(message) {
+      // Create floating message element
+      const floatingMsg = document.createElement('div');
+      floatingMsg.className = 'floating-message';
+      floatingMsg.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+
+      // Style the message
+      floatingMsg.style.position = 'fixed';
+      floatingMsg.style.top = '20px';
+      floatingMsg.style.left = '50%';
+      floatingMsg.style.transform = 'translateX(-50%)';
+      floatingMsg.style.backgroundColor = 'var(--primary-dark)';
+      floatingMsg.style.color = 'white';
+      floatingMsg.style.padding = '12px 20px';
+      floatingMsg.style.borderRadius = '8px';
+      floatingMsg.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.2)';
+      floatingMsg.style.zIndex = '1000';
+      floatingMsg.style.opacity = '0';
+      floatingMsg.style.transition = 'all 0.3s ease';
+
+      // Add to body
+      document.body.appendChild(floatingMsg);
+
+      // Animate in
+      setTimeout(() => {
+        floatingMsg.style.opacity = '1';
+      }, 10);
+
+      // Animate out and remove after delay
+      setTimeout(() => {
+        floatingMsg.style.opacity = '0';
+        setTimeout(() => {
+          document.body.removeChild(floatingMsg);
+        }, 300);
+      }, 3000);
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-bell"></i> Health Reminder System</h1>
+      <p>Set up personalized reminders for your medications and exercises</p>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          <ul>
+            {% for message in messages %}
+              <li><i class="fas fa-check-circle"></i> {{ message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post">
+      <!-- Medicine Reminder Section -->
+      <div class="card">
+        <div class="card-header" data-section="medicineSection" onclick="toggleSection('medicineSection')">
+          <div class="section-title">
+            <div class="icon-container">
+              <i class="fas fa-pills"></i>
+            </div>
+            <h2>Medication Reminders</h2>
+          </div>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="card-body" id="medicineSection">
+          <div class="add-row">
+            <button type="button" class="btn btn-primary" onclick="addMedicineRow()">
+              <i class="fas fa-plus-circle btn-icon"></i>Add Medication
+            </button>
+          </div>
+          <table id="medicineTable">
+            <thead>
+              <tr>
+                <th><i class="fas fa-prescription-bottle-alt"></i> Medication Name</th>
+                <th><i class="fas fa-weight"></i> Dosage</th>
+                <th><i class="fas fa-clock"></i> Time</th>
+                <th><i class="fas fa-calendar-alt"></i> Frequency</th>
+                <th>
+                  <i class="fas fa-info-circle"></i> Instructions
+                  <div class="tooltip">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="tooltip-text">Any special instructions for taking this medication</span>
+                  </div>
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="initial-row">
+                <td><input type="text" name="med_name" placeholder="e.g., Aspirin" required></td>
+                <td><input type="text" name="dosage" placeholder="e.g., 500mg" required></td>
+                <td><input type="time" name="med_time" required></td>
+                <td>
+                  <select name="frequency" required>
+                    <option value="" disabled selected>Select frequency</option>
+                    <option value="Daily">Daily</option>
+                    <option value="Twice daily">Twice daily</option>
+                    <option value="Three times daily">Three times daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="As needed">As needed</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </td>
+                <td><input type="text" name="additional_instructions" placeholder="e.g., Take with food"></td>
+                <td class="text-center"><i class="fas fa-trash-alt delete-row" onclick="deleteRow(this)"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Exercise Reminder Section -->
+      <div class="card">
+        <div class="card-header" data-section="exerciseSection" onclick="toggleSection('exerciseSection')">
+          <div class="section-title">
+            <div class="icon-container">
+              <i class="fas fa-running"></i>
+            </div>
+            <h2>Exercise Reminders</h2>
+          </div>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="card-body" id="exerciseSection">
+          <div class="add-row">
+            <button type="button" class="btn btn-primary" onclick="addExerciseRow()">
+              <i class="fas fa-plus-circle btn-icon"></i>Add Exercise
+            </button>
+          </div>
+          <table id="exerciseTable">
+            <thead>
+              <tr>
+                <th><i class="fas fa-dumbbell"></i> Exercise Type</th>
+                <th><i class="fas fa-hourglass-half"></i> Duration</th>
+                <th><i class="fas fa-clock"></i> Time</th>
+                <th>
+                  <i class="fas fa-sliders-h"></i> Specifications
+                  <div class="tooltip">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="tooltip-text">Additional details about your exercise routine</span>
+                  </div>
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="initial-row">
+                <td>
+                  <select name="exercise_type" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option value="Walking">Walking</option>
+                    <option value="Running">Running</option>
+                    <option value="Swimming">Swimming</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Strength Training">Strength Training</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </td>
+                <td><input type="text" name="duration" placeholder="e.g., 30 minutes" required></td>
+                <td><input type="time" name="exercise_time" required></td>
+                <td><input type="text" name="exercise_specs" placeholder="e.g., Moderate intensity"></td>
+                <td class="text-center"><i class="fas fa-trash-alt delete-row" onclick="deleteRow(this)"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="submit-wrapper">
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-save"></i> Save Reminders
+        </button>
+      </div>
+    </form>
+
+    <!-- Display Scheduled Entries if available -->
+    {% if scheduled_entries.medicine or scheduled_entries.exercise %}
+      <div class="card">
+        <div class="card-header">
+          <div class="section-title">
+            <div class="icon-container">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <h2>Current Reminders</h2>
+          </div>
+        </div>
+        <div class="card-body">
+          {% if scheduled_entries.medicine %}
+            <h3><i class="fas fa-pills"></i> Medication Reminders</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th><i class="fas fa-prescription-bottle-alt"></i> Medication</th>
+                  <th><i class="fas fa-weight"></i> Dosage</th>
+                  <th><i class="fas fa-clock"></i> Time</th>
+                  <th><i class="fas fa-calendar-alt"></i> Frequency</th>
+                  <th><i class="fas fa-info-circle"></i> Instructions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for entry in scheduled_entries.medicine %}
+                  <tr>
+                    <td>{{ entry.medicine }}</td>
+                    <td>{{ entry.dosage }}</td>
+                    <td>{{ entry.time }}</td>
+                    <td>{{ entry.frequency }}</td>
+                    <td>{{ entry.instructions }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="empty-message">
+              <i class="fas fa-prescription-bottle"></i>
+              <p>No medication reminders set yet</p>
+            </div>
+          {% endif %}
+
+          {% if scheduled_entries.exercise %}
+            <h3><i class="fas fa-running"></i> Exercise Reminders</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th><i class="fas fa-dumbbell"></i> Exercise</th>
+                  <th><i class="fas fa-hourglass-half"></i> Duration</th>
+                  <th><i class="fas fa-clock"></i> Time</th>
+                  <th><i class="fas fa-sliders-h"></i> Specifications</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for entry in scheduled_entries.exercise %}
+                  <tr>
+                    <td>{{ entry.exercise }}</td>
+                    <td>{{ entry.duration }}</td>
+                    <td>{{ entry.time }}</td>
+                    <td>{{ entry.specs }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <div class="empty-message">
+              <i class="fas fa-dumbbell"></i>
+              <p>No exercise reminders set yet</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
