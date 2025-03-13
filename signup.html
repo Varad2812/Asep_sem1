@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SmartDiaTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a91ff;
+            --secondary-color: #0055b3;
+            --accent-color: #00d1ff;
+            --medical-blue: #0077cc;
+            --light-blue: #e6f3ff;
+            --success-green: #00b894;
+            --light-green: #e6fff7;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            color: #1f2937;
+            min-height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-green) 100%);
+            background-image:
+                url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M25 15h10v10h10v10H35v10H25V35H15V25h10V15z" fill="%230077cc" fill-opacity="0.05"/></svg>'),
+                url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" fill="%2300b894" fill-opacity="0.05"/></svg>');
+        }
+
+        .signup-page {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .signup-container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .signup-image {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(0, 119, 204, 0.95) 0%, rgba(0, 85, 179, 0.95) 100%),
+                        url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=2100');
+            background-size: cover;
+            background-position: center;
+            padding: 3rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signup-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M45 40h10v10h10v10H55v10H45V60H35V50h10V40z" fill="%23ffffff" fill-opacity="0.1"/></svg>');
+        }
+
+        .signup-form {
+            flex: 1;
+            padding: 3rem;
+            background: transparent;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .signup-form h2 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 1.2rem;
+            color: var(--medical-blue);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid rgba(0, 119, 204, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            box-sizing: border-box;
+            height: 3.2rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"] {
+            padding-left: 3rem;
+        }
+
+        .form-group input[type="password"] {
+            padding: 1rem 1rem 1rem 3rem;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 145, 255, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 145, 255, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 145, 255, 0.3);
+        }
+
+        .signup-links {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .signup-links p {
+            margin: 0;
+            color: #666;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-error {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border-color: rgba(255, 68, 68, 0.2);
+        }
+
+        .alert-success {
+            background: rgba(0, 200, 81, 0.1);
+            color: #00C851;
+            border-color: rgba(0, 200, 81, 0.2);
+        }
+
+        .requirements-list {
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0.5rem 0 0 0;
+            padding-left: 1rem;
+            list-style-type: none;
+        }
+
+        .requirements-list li {
+            margin-bottom: 0.25rem;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .requirements-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .medical-icons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: auto;
+        }
+
+        .medical-icons i {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .medical-icons i:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .signup-image h1 {
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0;
+        }
+
+        .signup-image p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .signup-image {
+                display: none;
+            }
+            
+            .signup-container {
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-page">
+        <div class="signup-container">
+            <div class="signup-image">
+                <div>
+                    <h1>SmartDiaTrack</h1>
+                    <p>Your intelligent companion for seamless diabetes management</p>
+                </div>
+                <div class="medical-icons">
+                    <i class="fas fa-heartbeat"></i>
+                    <i class="fas fa-notes-medical"></i>
+                    <i class="fas fa-user-md"></i>
+                    <i class="fas fa-capsules"></i>
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+            </div>
+            <div class="signup-form">
+                <h2>Create Account</h2>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('signup') }}">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="username" placeholder="Username" required minlength="4" pattern="[a-zA-Z][a-zA-Z0-9_]*">
+                        <ul class="requirements-list">
+                            <li>At least 4 characters long</li>
+                            <li>Must start with a letter</li>
+                            <li>Can contain letters, numbers, and underscores</li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" placeholder="Password" required minlength="8">
+                        <ul class="requirements-list">
+                            <li>At least 8 characters long</li>
+                            <li>Must contain uppercase and lowercase letters</li>
+                            <li>Must contain numbers and special characters</li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <div class="signup-links">
+                    <p>Already have an account? <a href="http://127.0.0.1:5004/login">Log In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Client-side password validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Password strength validation
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isLongEnough = password.length >= 8;
+
+            if (!(hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar && isLongEnough)) {
+                e.preventDefault();
+                alert('Password does not meet all requirements!');
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
+ 

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blood Sugar Test Reports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 200px;
+            padding: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .graph {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blood Sugar Test Reports</h1>
+    
+    <div class="form-container">
+        <h2>Add New Report</h2>
+        <form id="reportForm">
+            <div class="form-group">
+                <label for="post_prandial_glucose">Post Prandial Glucose (mg/dL):</label>
+                <input type="number" id="post_prandial_glucose" name="post_prandial_glucose" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="fasting_glucose">Fasting Glucose (mg/dL):</label>
+                <input type="number" id="fasting_glucose" name="fasting_glucose" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="hba1c">HbA1c (%):</label>
+                <input type="number" id="hba1c" name="hba1c" step="0.1" required>
+            </div>
+            
+            <button type="submit">Add Report</button>
+        </form>
+    </div>
+
+    <h2>Previous Reports</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Post Prandial</th>
+            <th>Fasting</th>
+            <th>HbA1c</th>
+        </tr>
+        {% for report in reports %}
+        <tr>
+            <td>{{ report[1] }}</td>
+            <td>{{ report[2] }}</td>
+            <td>{{ report[3] }}</td>
+            <td>{{ report[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="graph">
+        <h2>Measurements Graph</h2>
+        <img src="{{ url_for('show_graph') }}" alt="Blood Sugar Measurements">
+    </div>
+
+    <script>
+        document.getElementById('reportForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('/add_report', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Report added successfully');
+                    location.reload();  // Refresh page to show new data
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        };
+    </script>
+</body>
+</html> 
