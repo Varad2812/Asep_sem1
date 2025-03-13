@@ -144,7 +144,7 @@ def signup():
             conn.close()
 
             flash('Registration successful! Please login.', 'success')
-            return redirect(url_for('login_redirect'))
+            return redirect(url_for('login'))  # Redirect directly to login route
 
         except Exception as e:
             flash(f'Error during registration: {str(e)}', 'error')
