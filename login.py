@@ -6,7 +6,7 @@ from db_config import get_db, init_db
 from config import USER_SETTINGS_TABLE
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-here')
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your-secret-key-here')
 
 # Add a flag to track first request
 _is_first_request = True
@@ -71,8 +71,7 @@ def login():
             session['username'] = username
             session['email'] = email
             flash('Login successful! Welcome back.', 'success')
-            # Show success message before redirecting
-            return render_template('login.html')
+            return redirect(url_for('dashboard'))  # Redirect to dashboard after successful login
         else:
             flash('Invalid email or password', 'error')
             return render_template('login.html')

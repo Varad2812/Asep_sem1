@@ -4,6 +4,7 @@ import os
 import hashlib
 import re
 from functools import wraps
+from db_config import get_db, init_db
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your-secret-key-here')
@@ -14,7 +15,7 @@ DB_PATH = os.environ.get('DB_PATH', '/tmp/patient_data.db')
 def init_db():
     """Initialize the database and create tables if they don't exist."""
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_db()
         cursor = conn.cursor()
         
         # Create credentials table if it doesn't exist
@@ -119,7 +120,7 @@ def signup():
             return redirect(url_for('signup'))
 
         try:
-            conn = sqlite3.connect(DB_PATH)
+            conn = get_db()
             cursor = conn.cursor()
 
             # Check if username or email already exists
@@ -143,7 +144,7 @@ def signup():
             conn.close()
 
             flash('Registration successful! Please login.', 'success')
-            return redirect(url_for('login'))
+            return redirect(url_for('login_redirect'))
 
         except Exception as e:
             flash(f'Error during registration: {str(e)}', 'error')
