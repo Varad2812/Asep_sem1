@@ -45,4 +45,20 @@ ENV/
 logs/
 
 # Vercel
-.vercel 
+.vercel
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+reports/
+*.xlsx
+credentials.xlsx
+dataentry.xlsx
+patient_data.db 
